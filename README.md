@@ -1,113 +1,109 @@
-# Nail Art Certification
+# Self Pampering — Nail Art Studio & Training Academy
 
-A website for nail technicians to upload, verify, and track the expiry of their
-professional certifications. Backed by Supabase (Postgres + Auth + Storage +
-Edge Functions) as the permanent database.
+A complete, responsive marketing website for Self Pampering: a nail art
+studio and training academy. Includes a certificate verification and
+PDF-download feature for academy graduates.
+
+This is a **frontend-only** build. All data (services, gallery, courses,
+testimonials, certificates) comes from a typed mock API layer designed to
+be swapped for a real Node.js + Supabase backend without touching any UI
+code — see [`docs/backend-handoff-notes.md`](docs/backend-handoff-notes.md)
+for the integration plan.
 
 ## Stack
 
-- **Frontend**: React + TypeScript + Vite, React Router
-- **Backend**: Supabase (Postgres, Auth, Storage, Edge Functions)
+- React + TypeScript + Vite
+- Tailwind CSS for styling
+- React Router for routing
+- Framer Motion for scroll/entrance animations
+- react-hook-form + zod for form validation
+- jsPDF + html2canvas for client-side certificate PDF generation
+- lucide-react for icons
 
-## Project layout
-
-```
-src/
-  lib/               Supabase client SDK + shared TypeScript types
-  context/           Auth context (session, current artist profile)
-  components/        Layout, route guarding
-  pages/             Login, signup, dashboard, certificate detail/create, profile
-supabase/
-  migrations/        SQL schema, RLS policies, storage bucket setup
-  functions/
-    verify-certificate/            Edge Function: verifies a certificate against
-                                    its issuing authority
-    check-certificate-duration/    Edge Function: expiry/duration checks + email
-                                    notifications
-```
-
-## Setup
-
-### 1. Create a Supabase project
-
-Create a project at [supabase.com](https://supabase.com) and grab its Project
-URL and anon key from **Project Settings → API**.
-
-### 2. Apply the database schema
-
-In the Supabase SQL Editor, run `supabase/migrations/0001_init.sql`. This creates:
-
-- `nail_artists`, `certificates`, `certification_authorities`,
-  `certificate_verification_logs` tables
-- Row Level Security policies so artists can only see/manage their own data
-- The `nail-certificates` storage bucket for uploaded certificate files
-
-Or, with the Supabase CLI:
-
-```bash
-supabase link --project-id YOUR_PROJECT_ID
-supabase db push
-```
-
-### 3. Deploy the Edge Functions
-
-```bash
-supabase functions deploy verify-certificate
-supabase functions deploy check-certificate-duration
-```
-
-Both functions require `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and
-`SUPABASE_SERVICE_ROLE_KEY` to be set as function secrets (the CLI sets the
-first two automatically; set the service role key yourself):
-
-```bash
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-supabase secrets set RESEND_API_KEY=your-resend-key   # optional, for email alerts
-```
-
-### 4. Configure the frontend
-
-```bash
-cp .env.example .env
-```
-
-Fill in `.env`:
-
-```
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
-```
-
-### 5. Run it
+## Getting started
 
 ```bash
 npm install
 npm run dev
 ```
 
-## How certificate verification works
+Then open the printed local URL. No environment variables or backend are
+required — everything runs against mock data.
 
-1. An artist signs up, completes their profile, and adds a certificate
-   (number, issuing authority, issue/expiry dates, optional file upload).
-2. From the certificate's detail page they can trigger **Verify now**, which
-   calls the `verify-certificate` Edge Function.
-3. The function looks up the caller's session, confirms they own the
-   certificate, then calls the configured verification method for that
-   issuing authority (`NAILS_BOARD_OF_INDIA`, `INDIAN_BEAUTY_COUNCIL`, etc.),
-   or falls back to a generic default.
-4. The certificate's `status` (`pending` / `verified` / `expired` / `revoked`
-   / `invalid`) is updated and every attempt is written to
-   `certificate_verification_logs` for an audit trail.
-5. The `check-certificate-duration` function computes days-until-expiry and
-   alert level (`none` / `warning` / `critical`) for an artist's certificates,
-   and can batch-notify artists with certificates expiring soon (service-role
-   only, intended to be run on a schedule).
+Other scripts:
 
-## Adding a new issuing authority
+```bash
+npm run build    # type-check and production build
+npm run preview  # preview the production build locally
+npm run lint      # lint with oxlint
+```
 
-1. Insert a row into `certification_authorities` with its API endpoint and
-   verification method.
-2. Add a `verifyWith<Authority>` function in
-   `supabase/functions/verify-certificate/index.ts` and register it in the
-   `verificationProviders` map.
-3. Redeploy: `supabase functions deploy verify-certificate`.
+## Project structure
+
+```
+src/
+  components/
+    layout/        Header, Footer, page Layout
+    ui/             Shared primitives (Button, Card, Field, Lightbox, ...)
+    home/           Home page sections (Hero, Highlights, Testimonials, ...)
+    certificate/    The certificate preview used on the verification page
+  pages/            One component per route (Home, Services, Gallery, Academy,
+                     VerifyCertificate, About, Booking, Contact, NotFound)
+  lib/
+    api/            Mock, typed "service layer" — see Backend integration below
+    types.ts        Shared TypeScript interfaces
+    pdf.ts          Client-side PDF generation helper
+    utils.ts        Small shared helpers
+docs/
+  backend-handoff-notes.md   Supabase schema + API contract for the future backend
+```
+
+## Pages
+
+- **Home** — hero, highlights, featured services, gallery preview, testimonials,
+  certificate verification teaser, newsletter signup
+- **Services** — filterable service list with pricing and booking CTA
+- **Gallery** — filterable, lightbox-enabled image grid
+- **Academy** — course listings with curriculum, fees, and certificate info
+- **Verify Certificate** — the core feature (see below)
+- **About** — studio story and team bios
+- **Booking** — validated appointment request form
+- **Contact** — contact form, hours, and map placeholder
+
+## Certificate verification (core feature)
+
+`/verify-certificate` lets a visitor enter a certificate reference number
+(try `SP-2026-00123`, `SP-2025-00987`, `SP-2025-00456`, or `SP-2024-00078`)
+and:
+
+- shows a loading state while "checking" the reference number,
+- renders a styled, official-looking certificate on a match, with a
+  **Download as PDF** button that generates a print-quality PDF from the
+  exact certificate shown, or
+- shows a friendly "not found" state for an invalid reference.
+
+## Backend integration points
+
+Every function in `src/lib/api/*.ts` is async, typed, and already shaped
+like a real network call (with a simulated delay). Each file starts with a
+`TODO(backend)` comment describing the real endpoint it should call. To wire
+in a real backend:
+
+1. Build the Node.js API + Supabase schema described in
+   [`docs/backend-handoff-notes.md`](docs/backend-handoff-notes.md).
+2. Replace the body of each function in `src/lib/api/*.ts` with a `fetch`
+   call to the matching endpoint.
+3. No page or component needs to change — they only ever import from
+   `src/lib/api/*`.
+
+## A note on the gallery photos
+
+The brief asked for photos from the studio's Instagram
+(`@selfpampering2022`), but this build environment cannot reach
+instagram.com, and Instagram has no public API for pulling a business
+account's photos without authentication. The gallery, hero, and about-page
+images currently use placeholder stock photography (Lorem Picsum) so every
+page is fully demonstrable. Before launch, download the real photos from
+Instagram and swap the URLs in `src/lib/api/gallery.ts`,
+`src/components/home/Hero.tsx`, and `src/pages/About.tsx` — see the note at
+the bottom of `docs/backend-handoff-notes.md`.

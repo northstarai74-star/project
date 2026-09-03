@@ -1,30 +1,26 @@
-import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useEffect } from 'react'
+import { Hero } from '../components/home/Hero'
+import { Highlights } from '../components/home/Highlights'
+import { ServicesPreview } from '../components/home/ServicesPreview'
+import { GalleryPreview } from '../components/home/GalleryPreview'
+import { Testimonials } from '../components/home/Testimonials'
+import { CertificateTeaser } from '../components/home/CertificateTeaser'
+import { NewsletterCta } from '../components/home/NewsletterCta'
 
 export function Home() {
-  const { session } = useAuth();
+  useEffect(() => {
+    document.title = 'Self Pampering | Nail Art Studio & Training Academy'
+  }, [])
 
   return (
-    <div className="landing">
-      <h1>Nail art certificate authentication</h1>
-      <p>
-        Manage your nail technician certifications in one place. Upload your certificates,
-        verify them against issuing authorities, and get alerted before they expire.
-      </p>
-      <div className="landing-actions">
-        {session ? (
-          <Link to="/dashboard" className="cta">
-            Go to dashboard
-          </Link>
-        ) : (
-          <>
-            <Link to="/signup" className="cta">
-              Get started
-            </Link>
-            <Link to="/login">Log in</Link>
-          </>
-        )}
-      </div>
-    </div>
-  );
+    <>
+      <Hero />
+      <Highlights />
+      <ServicesPreview />
+      <GalleryPreview />
+      <Testimonials />
+      <CertificateTeaser />
+      <NewsletterCta />
+    </>
+  )
 }
