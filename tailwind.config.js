@@ -4,18 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        cream: '#FFFBF7',
+        // Professional "boutique editorial" palette: warm ivory ground,
+        // near-black ink, muted rosewood and brass accents (swapped in from
+        // the earlier bubblegum-pink/bright-gold scheme for a more
+        // grown-up, trustworthy feel).
+        cream: '#FAF6F0',
         blush: {
-          DEFAULT: '#F2B8CB',
-          light: '#F7D9E3',
-          dark: '#E794AF',
+          DEFAULT: '#C08893',
+          light: '#EFDDD9',
+          dark: '#9C5F6C',
         },
         gold: {
-          DEFAULT: '#C9A44C',
-          light: '#D4AF37',
-          dark: '#A8863B',
+          DEFAULT: '#A6813C',
+          light: '#C9AD73',
+          dark: '#7E5F28',
         },
-        charcoal: '#2B2320',
+        charcoal: '#211B18',
       },
       fontFamily: {
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
@@ -26,12 +30,21 @@ export default {
         '2xl': '1.5rem',
       },
       boxShadow: {
-        soft: '0 10px 40px -12px rgba(43, 35, 32, 0.15)',
-        gold: '0 8px 24px -8px rgba(201, 164, 76, 0.45)',
+        soft: '0 10px 40px -12px rgba(33, 27, 24, 0.16)',
+        gold: '0 8px 24px -8px rgba(166, 129, 60, 0.4)',
       },
       backgroundImage: {
         'gold-foil':
-          'linear-gradient(120deg, #C9A44C 0%, #F2D98A 25%, #C9A44C 50%, #F2D98A 75%, #C9A44C 100%)',
+          'linear-gradient(120deg, #A6813C 0%, #D9C088 25%, #A6813C 50%, #D9C088 75%, #A6813C 100%)',
+      },
+      keyframes: {
+        shimmer: {
+          '0%, 100%': { filter: 'brightness(1) saturate(1)' },
+          '50%': { filter: 'brightness(1.04) saturate(1.08)' },
+        },
+      },
+      animation: {
+        shimmer: 'shimmer 6s ease-in-out infinite',
       },
     },
   },

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { BadgeCheck } from 'lucide-react'
 import { Button } from '../ui/Button'
+import { ArtTile } from '../ui/ArtTile'
 
 export function Hero() {
   return (
@@ -42,13 +43,11 @@ export function Hero() {
           className="relative"
         >
           <div className="overflow-hidden rounded-2xl shadow-soft">
-            <img
-              src="https://picsum.photos/seed/self-pampering-hero/900/1000"
-              alt="Close-up of an elegant hand-painted nail art design by Self Pampering"
-              className="h-[420px] w-full object-cover sm:h-[520px]"
-              loading="eager"
-              width={900}
-              height={1000}
+            <ArtTile
+              seed="hero"
+              icon="flower"
+              label="Close-up of an elegant hand-painted nail art design by Self Pampering"
+              className="h-[420px] w-full animate-shimmer sm:h-[520px]"
             />
           </div>
           <div className="absolute -bottom-6 -left-6 hidden rounded-2xl bg-white p-4 shadow-soft sm:block">

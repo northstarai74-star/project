@@ -159,15 +159,22 @@ RESEND_API_KEY=
 Do not commit real values — these are placeholders for the backend project's
 own `.env`.
 
-## 5. Notes on the gallery images used in this build
+## 5. Notes on photos and video in this build
 
 The client's Instagram (`@selfpampering2022`) was named as the source for
-gallery photography, but this environment could not reach instagram.com
-(network egress to Instagram is blocked here, and Instagram does not offer a
-public, unauthenticated API for pulling a business account's photos). The
-gallery and hero images currently use placeholder stock photography from
-Lorem Picsum so every layout is fully demonstrable. Before launch, replace
-the URLs in `src/lib/api/gallery.ts` (and the hero/about images in
-`src/components/home/Hero.tsx` and `src/pages/About.tsx`) with real photos
-downloaded from the studio's Instagram and uploaded to Supabase Storage (or
-`public/images/`).
+gallery photography and video, but this environment cannot reach
+instagram.com or any stock-media host (network egress to all of them is
+blocked by this sandbox's policy), and Instagram does not offer a public,
+unauthenticated API for pulling a business account's photos.
+
+Rather than ship broken image links or unlicensed stock photos, every photo
+slot renders `<ArtTile>` (`src/components/ui/ArtTile.tsx`) — a small
+deterministic brand-colored illustration — instead. Before launch:
+
+1. Download real photos/video from the studio's Instagram and upload them to
+   Supabase Storage (or `public/images/` for a simple start).
+2. Update the `image` / `src` / `avatar` fields in `src/lib/api/gallery.ts`,
+   `services.ts`, `courses.ts`, and `testimonials.ts` to the real URLs.
+3. Swap each `<ArtTile seed={...} label={...} />` for a real `<img>` (reuse
+   `label` as `alt`), or for the hero specifically, a `<video autoPlay muted
+   loop playsInline>` if a clip is available.

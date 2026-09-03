@@ -7,6 +7,7 @@ import { PageHeader } from '../components/ui/PageHeader'
 import { Skeleton } from '../components/ui/Skeleton'
 import { Button } from '../components/ui/Button'
 import { Reveal } from '../components/ui/Reveal'
+import { ArtTile } from '../components/ui/ArtTile'
 
 const CATEGORIES: Array<Service['category'] | 'All'> = [
   'All',
@@ -59,13 +60,11 @@ export function Services() {
           {visible?.map((service, i) => (
             <Reveal key={service.id} delay={(i % 3) * 0.08}>
               <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-soft">
-                <img
-                  src={service.image}
-                  alt={service.name}
-                  className="h-48 w-full object-cover"
-                  loading="lazy"
-                  width={640}
-                  height={480}
+                <ArtTile
+                  seed={service.image}
+                  label={service.name}
+                  radius="none"
+                  className="h-48 w-full"
                 />
                 <div className="flex flex-1 flex-col p-6">
                   <p className="text-xs font-semibold uppercase tracking-wide text-gold-dark">

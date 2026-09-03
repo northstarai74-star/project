@@ -12,7 +12,7 @@ const MOCK_SERVICES: Service[] = [
     description: 'Nail shaping, cuticle care, hand massage, and a polish finish in the shade of your choice.',
     price: 25,
     durationMinutes: 45,
-    image: 'https://picsum.photos/seed/self-pampering-classic-1/640/480',
+    image: 'self-pampering-classic-1',
   },
   {
     id: 'svc-classic-pedi',
@@ -21,7 +21,7 @@ const MOCK_SERVICES: Service[] = [
     description: 'Relaxing soak, exfoliation, nail shaping, and polish for soft, camera-ready feet.',
     price: 35,
     durationMinutes: 60,
-    image: 'https://picsum.photos/seed/self-pampering-classic-2/640/480',
+    image: 'self-pampering-classic-2',
   },
   {
     id: 'svc-gel-extension',
@@ -30,7 +30,7 @@ const MOCK_SERVICES: Service[] = [
     description: 'Durable, chip-resistant gel extensions built and shaped to your desired length.',
     price: 55,
     durationMinutes: 90,
-    image: 'https://picsum.photos/seed/self-pampering-gel-1/640/480',
+    image: 'self-pampering-gel-1',
   },
   {
     id: 'svc-gel-overlay',
@@ -39,7 +39,7 @@ const MOCK_SERVICES: Service[] = [
     description: 'Strengthen and refresh your natural nails with a glossy, long-lasting gel overlay.',
     price: 40,
     durationMinutes: 60,
-    image: 'https://picsum.photos/seed/self-pampering-gel-2/640/480',
+    image: 'self-pampering-gel-2',
   },
   {
     id: 'svc-3d-art',
@@ -48,7 +48,7 @@ const MOCK_SERVICES: Service[] = [
     description: 'Hand-sculpted charms, embellishments, and textures for a truly one-of-a-kind set.',
     price: 65,
     durationMinutes: 120,
-    image: 'https://picsum.photos/seed/self-pampering-3d-1/640/480',
+    image: 'self-pampering-3d-1',
   },
   {
     id: 'svc-3d-chrome',
@@ -57,7 +57,7 @@ const MOCK_SERVICES: Service[] = [
     description: 'Mirror chrome finishes layered with fine-line art for a bold, editorial look.',
     price: 60,
     durationMinutes: 105,
-    image: 'https://picsum.photos/seed/self-pampering-3d-2/640/480',
+    image: 'self-pampering-3d-2',
   },
   {
     id: 'svc-bridal-trial',
@@ -66,7 +66,7 @@ const MOCK_SERVICES: Service[] = [
     description: 'A one-on-one design trial to perfect your wedding-day nail look ahead of the big day.',
     price: 45,
     durationMinutes: 60,
-    image: 'https://picsum.photos/seed/self-pampering-bridal-1/640/480',
+    image: 'self-pampering-bridal-1',
   },
   {
     id: 'svc-bridal-party',
@@ -75,7 +75,7 @@ const MOCK_SERVICES: Service[] = [
     description: 'On-site or in-studio nail styling for the bride and her full wedding party.',
     price: 250,
     durationMinutes: 240,
-    image: 'https://picsum.photos/seed/self-pampering-bridal-2/640/480',
+    image: 'self-pampering-bridal-2',
   },
 ]
 

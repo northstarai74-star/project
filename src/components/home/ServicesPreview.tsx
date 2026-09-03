@@ -6,6 +6,7 @@ import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
 import { Skeleton } from '../ui/Skeleton'
 import { Button } from '../ui/Button'
+import { ArtTile } from '../ui/ArtTile'
 
 export function ServicesPreview() {
   const [services, setServices] = useState<Service[] | null>(null)
@@ -37,13 +38,11 @@ export function ServicesPreview() {
           {services?.map((service, i) => (
             <Reveal key={service.id} delay={i * 0.08}>
               <div className="group h-full overflow-hidden rounded-2xl bg-white shadow-soft">
-                <img
-                  src={service.image}
-                  alt={service.name}
-                  className="h-40 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                  width={640}
-                  height={480}
+                <ArtTile
+                  seed={service.image}
+                  label={service.name}
+                  radius="none"
+                  className="h-40 w-full transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="p-5">
                   <p className="text-xs font-semibold uppercase tracking-wide text-gold-dark">

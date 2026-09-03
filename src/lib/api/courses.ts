@@ -19,7 +19,7 @@ const MOCK_COURSES: Course[] = [
       'Intro to simple hand-painted nail art',
     ],
     certificateTitle: 'Certified Nail Art Fundamentals',
-    image: 'https://picsum.photos/seed/self-pampering-course-1/640/480',
+    image: 'self-pampering-course-1',
   },
   {
     id: 'course-advanced',
@@ -34,7 +34,7 @@ const MOCK_COURSES: Course[] = [
       'Client consultation and portfolio building',
     ],
     certificateTitle: 'Certified Advanced Nail Artist',
-    image: 'https://picsum.photos/seed/self-pampering-course-2/640/480',
+    image: 'self-pampering-course-2',
   },
   {
     id: 'course-diploma',
@@ -50,7 +50,7 @@ const MOCK_COURSES: Course[] = [
       'Final assessment and portfolio review',
     ],
     certificateTitle: 'Certified Professional Nail Artist',
-    image: 'https://picsum.photos/seed/self-pampering-course-3/640/480',
+    image: 'self-pampering-course-3',
   },
 ]
 

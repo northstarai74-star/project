@@ -5,12 +5,14 @@ export interface Service {
   description: string
   price: number
   durationMinutes: number
+  /** Real photo URL once available; today rendered as an <ArtTile seed={image}>. */
   image: string
 }
 
 export interface GalleryImage {
   id: string
   category: 'Bridal' | '3D Art' | 'Seasonal' | 'Minimal'
+  /** Real photo URL once available; today rendered as an <ArtTile seed={src}>. */
   src: string
   alt: string
 }
@@ -20,6 +22,7 @@ export interface Testimonial {
   name: string
   quote: string
   rating: number
+  /** Real photo URL once available; today rendered as an <ArtTile seed={avatar}>. */
   avatar: string
 }
 
@@ -31,6 +34,7 @@ export interface Course {
   fee: number
   curriculum: string[]
   certificateTitle: string
+  /** Real photo URL once available; today rendered as an <ArtTile seed={image}>. */
   image: string
 }
 

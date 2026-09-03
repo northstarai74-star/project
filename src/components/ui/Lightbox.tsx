@@ -1,16 +1,17 @@
 import { useEffect } from 'react'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { ArtTile } from './ArtTile'
 
 interface LightboxProps {
-  src: string
+  seed: string
   alt: string
   onClose: () => void
   onPrev?: () => void
   onNext?: () => void
 }
 
-export function Lightbox({ src, alt, onClose, onPrev, onNext }: LightboxProps) {
+export function Lightbox({ seed, alt, onClose, onPrev, onNext }: LightboxProps) {
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
       if (e.key === 'Escape') onClose()
@@ -64,15 +65,15 @@ export function Lightbox({ src, alt, onClose, onPrev, onNext }: LightboxProps) {
             <ChevronRight size={28} />
           </button>
         )}
-        <motion.img
+        <motion.div
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
           exit={{ scale: 0.9 }}
-          src={src}
-          alt={alt}
           onClick={(e) => e.stopPropagation()}
-          className="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-soft"
-        />
+          className="max-h-[85vh] w-full max-w-lg"
+        >
+          <ArtTile seed={seed} label={alt} className="aspect-[4/5] w-full shadow-soft" />
+        </motion.div>
       </motion.div>
     </AnimatePresence>
   )

@@ -3,6 +3,7 @@ import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import { getTestimonials } from '../../lib/api/testimonials'
 import type { Testimonial } from '../../lib/types'
 import { SectionHeading } from '../ui/SectionHeading'
+import { ArtTile } from '../ui/ArtTile'
 
 export function Testimonials() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
@@ -31,12 +32,12 @@ export function Testimonials() {
             “{current.quote}”
           </p>
           <div className="mt-6 flex items-center justify-center gap-3">
-            <img
-              src={current.avatar}
-              alt=""
-              className="h-12 w-12 rounded-full object-cover"
-              width={48}
-              height={48}
+            <ArtTile
+              seed={current.avatar}
+              label={`Portrait of ${current.name}`}
+              icon="none"
+              shape="round"
+              className="h-12 w-12"
             />
             <div className="text-left">
               <p className="font-semibold text-cream">{current.name}</p>

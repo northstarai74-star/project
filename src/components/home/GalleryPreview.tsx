@@ -6,6 +6,7 @@ import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
 import { Skeleton } from '../ui/Skeleton'
 import { Button } from '../ui/Button'
+import { ArtTile } from '../ui/ArtTile'
 
 export function GalleryPreview() {
   const [images, setImages] = useState<GalleryImage[] | null>(null)
@@ -35,13 +36,11 @@ export function GalleryPreview() {
           ))}
         {images?.map((image, i) => (
           <Reveal key={image.id} delay={i * 0.05} className="mb-4 break-inside-avoid">
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full rounded-2xl object-cover shadow-soft"
-              loading="lazy"
-              width={600}
-              height={750}
+            <ArtTile
+              seed={image.src}
+              label={image.alt}
+              icon={i % 2 === 0 ? 'flower' : 'sparkle'}
+              className="aspect-[4/5] w-full shadow-soft"
             />
           </Reveal>
         ))}

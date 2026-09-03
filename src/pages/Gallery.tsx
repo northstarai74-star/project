@@ -5,6 +5,7 @@ import { PageHeader } from '../components/ui/PageHeader'
 import { Skeleton } from '../components/ui/Skeleton'
 import { Reveal } from '../components/ui/Reveal'
 import { Lightbox } from '../components/ui/Lightbox'
+import { ArtTile } from '../components/ui/ArtTile'
 
 const CATEGORIES: Array<GalleryImage['category'] | 'All'> = [
   'All',
@@ -64,13 +65,12 @@ export function Gallery() {
                 className="focus-ring block w-full overflow-hidden rounded-2xl shadow-soft"
                 aria-label={`View larger image: ${image.alt}`}
               >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full object-cover transition-transform duration-500 hover:scale-105"
-                  loading="lazy"
-                  width={600}
-                  height={750}
+                <ArtTile
+                  seed={image.src}
+                  label={image.alt}
+                  icon={i % 2 === 0 ? 'flower' : 'sparkle'}
+                  radius="none"
+                  className="aspect-[4/5] w-full transition-transform duration-500 hover:scale-105"
                 />
               </button>
             </Reveal>
@@ -83,7 +83,7 @@ export function Gallery() {
 
       {activeIndex !== null && visible[activeIndex] && (
         <Lightbox
-          src={visible[activeIndex].src}
+          seed={visible[activeIndex].src}
           alt={visible[activeIndex].alt}
           onClose={() => setActiveIndex(null)}
           onPrev={() => setActiveIndex((i) => (i! - 1 + visible.length) % visible.length)}

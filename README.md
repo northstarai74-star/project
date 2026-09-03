@@ -96,14 +96,39 @@ in a real backend:
 3. No page or component needs to change — they only ever import from
    `src/lib/api/*`.
 
-## A note on the gallery photos
+## A note on photos and video
 
-The brief asked for photos from the studio's Instagram
+The brief asked for photos and video from the studio's Instagram
 (`@selfpampering2022`), but this build environment cannot reach
-instagram.com, and Instagram has no public API for pulling a business
-account's photos without authentication. The gallery, hero, and about-page
-images currently use placeholder stock photography (Lorem Picsum) so every
-page is fully demonstrable. Before launch, download the real photos from
-Instagram and swap the URLs in `src/lib/api/gallery.ts`,
-`src/components/home/Hero.tsx`, and `src/pages/About.tsx` — see the note at
-the bottom of `docs/backend-handoff-notes.md`.
+instagram.com or any stock media host (Unsplash, Pexels, Pixabay, Mixkit —
+all blocked by the sandbox's network policy), and Instagram has no public
+API for pulling a business account's photos without authentication.
+
+Every photo/video slot in the site currently renders `<ArtTile>`
+(`src/components/ui/ArtTile.tsx`) instead: a small, deterministic
+illustration generated from a CSS gradient in the brand palette plus a
+line-art icon, so nothing looks like a broken image link. Swap them for real
+media once available:
+
+- For a photo, replace the `<ArtTile seed="..." label="..." />` with a real
+  `<img>` (or Next/Image-style component), reusing the same `label` as
+  `alt` text.
+- For the hero, `<ArtTile seed="hero" ... />` in
+  `src/components/home/Hero.tsx` can become a `<video autoPlay muted loop
+  playsInline>` once a real clip exists — no other change needed, since it's
+  the only "hero visual" slot in the layout.
+- The mock `image`/`src`/`avatar` fields in `src/lib/api/*.ts` are currently
+  just seed strings for the tile's gradient; once real backend-hosted photo
+  URLs exist, those same fields become that URL.
+
+## Color palette
+
+Defined in `tailwind.config.js` — a professional, editorial palette rather
+than a bright/candy one:
+
+| Token | Hex | Use |
+|---|---|---|
+| `cream` | `#FAF6F0` | page background |
+| `charcoal` | `#211B18` | body text, dark sections |
+| `blush` / `blush-light` / `blush-dark` | `#C08893` / `#EFDDD9` / `#9C5F6C` | soft accent surfaces |
+| `gold` / `gold-light` / `gold-dark` | `#A6813C` / `#C9AD73` / `#7E5F28` | brand accent, CTAs, certificate foil |

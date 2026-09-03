@@ -8,6 +8,7 @@ import { Skeleton } from '../components/ui/Skeleton'
 import { Button } from '../components/ui/Button'
 import { Reveal } from '../components/ui/Reveal'
 import { Badge } from '../components/ui/Badge'
+import { ArtTile } from '../components/ui/ArtTile'
 
 export function Academy() {
   const [courses, setCourses] = useState<Course[] | null>(null)
@@ -32,13 +33,12 @@ export function Academy() {
           {courses?.map((course, i) => (
             <Reveal key={course.id} delay={i * 0.1}>
               <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-soft">
-                <img
-                  src={course.image}
-                  alt={course.title}
-                  className="h-44 w-full object-cover"
-                  loading="lazy"
-                  width={640}
-                  height={480}
+                <ArtTile
+                  seed={course.image}
+                  label={course.title}
+                  icon="shield"
+                  radius="none"
+                  className="h-44 w-full"
                 />
                 <div className="flex flex-1 flex-col p-6">
                   <Badge className="w-fit">{course.level}</Badge>
