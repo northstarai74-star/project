@@ -5,10 +5,9 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
-import { Dashboard } from './pages/Dashboard';
-import { NewCertificate } from './pages/NewCertificate';
-import { CertificateDetail } from './pages/CertificateDetail';
-import { Profile } from './pages/Profile';
+import { VerifyLookup } from './pages/VerifyLookup';
+import { AdminStudents } from './pages/AdminStudents';
+import { AdminStudentForm } from './pages/AdminStudentForm';
 
 function App() {
   return (
@@ -19,35 +18,28 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/verify" element={<VerifyLookup />} />
             <Route
-              path="/dashboard"
+              path="/admin"
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <AdminStudents />
                 </ProtectedRoute>
               }
             />
             <Route
-              path="/certificates/new"
+              path="/admin/students/new"
               element={
                 <ProtectedRoute>
-                  <NewCertificate />
+                  <AdminStudentForm />
                 </ProtectedRoute>
               }
             />
             <Route
-              path="/certificates/:id"
+              path="/admin/students/:id/edit"
               element={
                 <ProtectedRoute>
-                  <CertificateDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
+                  <AdminStudentForm />
                 </ProtectedRoute>
               }
             />

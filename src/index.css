@@ -389,3 +389,54 @@ label {
   border: 1px solid var(--border);
   border-radius: 8px;
 }
+
+/* Admin */
+.search-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.search-bar input {
+  flex: 1;
+}
+.search-bar button {
+  flex-shrink: 0;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.card-actions button.danger {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.preview-thumb {
+  max-width: 160px;
+  max-height: 160px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  object-fit: cover;
+}
+
+.certificate-preview {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+.verify-result {
+  margin-top: 32px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

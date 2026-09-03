@@ -1,29 +1,27 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
-import { supabase, certificateClient } from '../lib/supabase-client';
-import type { NailArtist } from '../lib/types';
+import { supabase, adminClient } from '../lib/supabase-client';
 
 interface AuthContextValue {
   session: Session | null;
   user: User | null;
-  profile: NailArtist | null;
+  isAdmin: boolean;
   loading: boolean;
-  refreshProfile: () => Promise<void>;
+  refreshAdminStatus: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState<NailArtist | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const refreshProfile = async () => {
+  const refreshAdminStatus = async () => {
     try {
-      const p = await certificateClient.getCurrentArtistProfile();
-      setProfile(p);
+      setIsAdmin(await adminClient.isCurrentUserAdmin());
     } catch {
-      setProfile(null);
+      setIsAdmin(false);
     }
   };
 
@@ -33,16 +31,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(async ({ data }) => {
       if (!mounted) return;
       setSession(data.session);
-      if (data.session) await refreshProfile();
+      if (data.session) await refreshAdminStatus();
       setLoading(false);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
       setSession(newSession);
       if (newSession) {
-        await refreshProfile();
+        await refreshAdminStatus();
       } else {
-        setProfile(null);
+        setIsAdmin(false);
       }
     });
 
@@ -54,7 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ session, user: session?.user ?? null, profile, loading, refreshProfile }}
+      value={{ session, user: session?.user ?? null, isAdmin, loading, refreshAdminStatus }}
     >
       {children}
     </AuthContext.Provider>

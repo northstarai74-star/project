@@ -1,8 +1,10 @@
 # Nail Art Certification
 
-A website for nail technicians to upload, verify, and track the expiry of their
-professional certifications. Backed by Supabase (Postgres + Auth + Storage +
-Edge Functions) as the permanent database.
+A public certificate-verification site for a nail art school: admins add and
+remove student certificate records (with a photo and a scan of the
+certificate), and anyone can look up a record by its reference number to see
+that it's genuine. Backed by Supabase (Postgres + Auth + Storage + Edge
+Functions) as the permanent database.
 
 ## Stack
 
@@ -14,17 +16,33 @@ Edge Functions) as the permanent database.
 ```
 src/
   lib/               Supabase client SDK + shared TypeScript types
-  context/           Auth context (session, current artist profile)
+  context/           Auth context (session, admin status)
   components/        Layout, route guarding
-  pages/             Login, signup, dashboard, certificate detail/create, profile
+  pages/
+    Home, Login, Signup             Public + account pages
+    VerifyLookup                    Public: look up a certificate by reference number
+    AdminGate                       Shown to a signed-in user who isn't an admin yet
+    AdminStudents                   Admin: list/search/remove students
+    AdminStudentForm                Admin: add/edit a student + upload photo & certificate
 supabase/
   migrations/        SQL schema, RLS policies, storage bucket setup
   functions/
-    verify-certificate/            Edge Function: verifies a certificate against
-                                    its issuing authority
-    check-certificate-duration/    Edge Function: expiry/duration checks + email
-                                    notifications
+    redeem-admin-code/    Edge Function: grants admin access given the invite code
 ```
+
+## How it works
+
+- **Public verification** (`/verify`): anyone enters a reference number and,
+  if it matches a `students` row, sees the student's name, course, status,
+  dates, and the certificate image. No login required.
+- **Admin panel** (`/admin`): a signed-in admin can add a student record
+  (reference number, name, course, dates, status), upload a photo and a
+  certificate image, edit a record, or remove one.
+- **Becoming an admin**: anyone can create an account, but only becomes an
+  admin by entering the invite code on `/admin` (checked server-side by the
+  `redeem-admin-code` Edge Function against the `ADMIN_SIGNUP_CODE` secret —
+  the code is never shipped to the browser). Once redeemed, they're added to
+  `admin_users` and can manage students from then on.
 
 ## Setup
 
@@ -37,33 +55,29 @@ URL and anon key from **Project Settings → API**.
 
 In the Supabase SQL Editor, run `supabase/migrations/0001_init.sql`. This creates:
 
-- `nail_artists`, `certificates`, `certification_authorities`,
-  `certificate_verification_logs` tables
-- Row Level Security policies so artists can only see/manage their own data
-- The `nail-certificates` storage bucket for uploaded certificate files
+- `admin_users` — who has admin access (rows only ever written server-side)
+- `students` — one row per certificate: `reference_number` (public lookup
+  key), `name`, `course`, dates, `status`, `photo_url`, `certificate_image_url`
+- Row Level Security: anyone can `SELECT` from `students` (that's the public
+  lookup); only admins can insert/update/delete
+- The `student-certificates` storage bucket (public read, admin-only write)
 
-Or, with the Supabase CLI:
+Or with the Supabase CLI:
 
 ```bash
 supabase link --project-id YOUR_PROJECT_ID
 supabase db push
 ```
 
-### 3. Deploy the Edge Functions
+### 3. Deploy the Edge Function and set the admin invite code
 
 ```bash
-supabase functions deploy verify-certificate
-supabase functions deploy check-certificate-duration
+supabase functions deploy redeem-admin-code
+supabase secrets set ADMIN_SIGNUP_CODE=choose-a-secret-code
 ```
 
-Both functions require `SUPABASE_URL`, `SUPABASE_ANON_KEY`, and
-`SUPABASE_SERVICE_ROLE_KEY` to be set as function secrets (the CLI sets the
-first two automatically; set the service role key yourself):
-
-```bash
-supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-supabase secrets set RESEND_API_KEY=your-resend-key   # optional, for email alerts
-```
+`SUPABASE_URL`, `SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` are
+provided to Edge Functions automatically by Supabase.
 
 ### 4. Configure the frontend
 
@@ -85,29 +99,14 @@ npm install
 npm run dev
 ```
 
-## How certificate verification works
+Sign up for an account, go to `/admin`, and enter the `ADMIN_SIGNUP_CODE` you
+set in step 3 to unlock the admin panel.
 
-1. An artist signs up, completes their profile, and adds a certificate
-   (number, issuing authority, issue/expiry dates, optional file upload).
-2. From the certificate's detail page they can trigger **Verify now**, which
-   calls the `verify-certificate` Edge Function.
-3. The function looks up the caller's session, confirms they own the
-   certificate, then calls the configured verification method for that
-   issuing authority (`NAILS_BOARD_OF_INDIA`, `INDIAN_BEAUTY_COUNCIL`, etc.),
-   or falls back to a generic default.
-4. The certificate's `status` (`pending` / `verified` / `expired` / `revoked`
-   / `invalid`) is updated and every attempt is written to
-   `certificate_verification_logs` for an audit trail.
-5. The `check-certificate-duration` function computes days-until-expiry and
-   alert level (`none` / `warning` / `critical`) for an artist's certificates,
-   and can batch-notify artists with certificates expiring soon (service-role
-   only, intended to be run on a schedule).
+## Security notes
 
-## Adding a new issuing authority
-
-1. Insert a row into `certification_authorities` with its API endpoint and
-   verification method.
-2. Add a `verifyWith<Authority>` function in
-   `supabase/functions/verify-certificate/index.ts` and register it in the
-   `verificationProviders` map.
-3. Redeploy: `supabase functions deploy verify-certificate`.
+- The `students` table is publicly readable by design (that's what makes
+  `/verify` work for anonymous visitors) — don't add sensitive personal data
+  (phone numbers, addresses, etc.) to it.
+- `admin_users` has no client-side write policy; the only way in is the
+  `redeem-admin-code` function, which checks the invite code server-side.
+- Rotate `ADMIN_SIGNUP_CODE` (via `supabase secrets set`) if it leaks.

@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { certificateClient } from '../lib/supabase-client';
+import { adminClient } from '../lib/supabase-client';
 
 export function Login() {
   const navigate = useNavigate();
@@ -14,8 +14,8 @@ export function Login() {
     setError(null);
     setSubmitting(true);
     try {
-      await certificateClient.signIn(email, password);
-      navigate('/dashboard');
+      await adminClient.signIn(email, password);
+      navigate('/admin');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign in failed');
     } finally {
@@ -26,7 +26,7 @@ export function Login() {
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
-        <h1>Log in</h1>
+        <h1>Admin log in</h1>
         {error && <p className="form-error">{error}</p>}
         <label>
           Email

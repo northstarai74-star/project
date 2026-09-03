@@ -1,10 +1,9 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { certificateClient, supabase } from '../lib/supabase-client';
+import { adminClient, supabase } from '../lib/supabase-client';
 
 export function Signup() {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -17,10 +16,10 @@ export function Signup() {
     setInfo(null);
     setSubmitting(true);
     try {
-      await certificateClient.signUp(email, password, { name });
+      await adminClient.signUp(email, password);
       const { data } = await supabase.auth.getSession();
       if (data.session) {
-        navigate('/dashboard');
+        navigate('/admin');
       } else {
         setInfo('Account created! Check your email to confirm before logging in.');
       }
@@ -34,19 +33,13 @@ export function Signup() {
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
-        <h1>Create your account</h1>
+        <h1>Create an account</h1>
+        <p className="muted">
+          Anyone can create an account. You'll need the admin invite code afterwards to manage
+          student records.
+        </p>
         {error && <p className="form-error">{error}</p>}
         {info && <p className="form-info">{info}</p>}
-        <label>
-          Name
-          <input
-            type="text"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            autoComplete="name"
-          />
-        </label>
         <label>
           Email
           <input

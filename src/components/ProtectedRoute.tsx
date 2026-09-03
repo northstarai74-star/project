@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+/** Requires a signed-in session. Does not require admin access. */
 export function ProtectedRoute({ children }: { children: ReactNode }) {
   const { session, loading } = useAuth();
 
