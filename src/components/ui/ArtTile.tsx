@@ -8,7 +8,7 @@ import { cn } from '../../lib/utils'
 // or a <video> element from the studio's Instagram once available — see
 // README.md and docs/backend-handoff-notes.md.
 
-type Icon = 'sparkle' | 'flower' | 'brush' | 'shield' | 'none'
+type Icon = 'nail' | 'nails' | 'sparkle' | 'flower' | 'brush' | 'shield' | 'none'
 type Radius = 'md' | 'none' | 'full'
 
 interface ArtTileProps {
@@ -41,6 +41,28 @@ function hashSeed(seed: string) {
 }
 
 const ICONS: Record<Exclude<Icon, 'none'>, ReactElement> = {
+  // A single manicured fingernail, close-up: nail plate + cuticle line +
+  // a glossy highlight streak — the closest thing to an actual "photo of a
+  // nail" this build can offer without real photography (see note above).
+  nail: (
+    <g>
+      <rect x="7.5" y="3.5" width="9" height="15.5" rx="4.5" ry="7" />
+      <path fill="none" d="M8.3 7.6c1.1-1.5 2.4-2.1 3.7-2.1s2.6.6 3.7 2.1" opacity="0.55" />
+      <path fill="none" d="M9.7 6.2c-.9 2-1.1 5-1 9.5" opacity="0.4" />
+    </g>
+  ),
+  // Three fingertips in a row, each with a polished nail — a stand-in for
+  // a "hand shot" of a finished manicure.
+  nails: (
+    <g>
+      <rect x="3.2" y="8" width="5.4" height="12.5" rx="2.7" ry="4.3" />
+      <rect x="9.3" y="3.5" width="5.4" height="16.5" rx="2.7" ry="4.6" />
+      <rect x="15.4" y="7" width="5.4" height="13" rx="2.7" ry="4.3" />
+      <path fill="none" d="M4.2 11c.7-.9 1.5-1.3 2.3-1.3s1.6.4 2.3 1.3" opacity="0.5" />
+      <path fill="none" d="M10.3 6.2c.8-1 1.6-1.4 2.4-1.4s1.6.4 2.4 1.4" opacity="0.5" />
+      <path fill="none" d="M16.4 10c.7-.9 1.5-1.3 2.3-1.3s1.6.4 2.3 1.3" opacity="0.5" />
+    </g>
+  ),
   sparkle: (
     <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" />
   ),
@@ -55,7 +77,7 @@ const RADIUS_CLASS: Record<Radius, string> = {
   full: 'rounded-full',
 }
 
-export function ArtTile({ seed, label, icon = 'sparkle', shape = 'rect', radius, className }: ArtTileProps) {
+export function ArtTile({ seed, label, icon = 'nail', shape = 'rect', radius, className }: ArtTileProps) {
   const hash = hashSeed(seed)
   const [a, b] = PALETTES[hash % PALETTES.length]
   const resolvedRadius = radius ?? (shape === 'round' ? 'full' : 'md')
@@ -88,11 +110,12 @@ export function ArtTile({ seed, label, icon = 'sparkle', shape = 'rect', radius,
         <div className="absolute inset-0 flex items-center justify-center">
           <svg
             aria-hidden="true"
-            width="22%"
-            height="22%"
+            width={icon === 'nail' || icon === 'nails' ? '34%' : '22%'}
+            height={icon === 'nail' || icon === 'nails' ? '34%' : '22%'}
             viewBox="0 0 24 24"
-            fill="none"
-            stroke="#FAF6F0"
+            fill={icon === 'nail' || icon === 'nails' ? '#FAF7F1' : 'none'}
+            fillOpacity={icon === 'nail' || icon === 'nails' ? 0.92 : 1}
+            stroke="#FAF7F1"
             strokeWidth={1.1}
             className="opacity-90 drop-shadow-sm"
           >

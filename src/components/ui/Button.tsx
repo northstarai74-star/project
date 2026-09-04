@@ -1,7 +1,7 @@
 import { type ButtonHTMLAttributes, forwardRef } from 'react'
 import { cn } from '../../lib/utils'
 
-type Variant = 'primary' | 'secondary' | 'outline' | 'ghost'
+type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'invert' | 'outline-invert'
 type Size = 'sm' | 'md' | 'lg'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -17,6 +17,10 @@ const variantClasses: Record<Variant, string> = {
   outline:
     'border border-gold text-charcoal hover:bg-gold/10',
   ghost: 'text-charcoal hover:bg-blush-light',
+  // For use on dark/charcoal surfaces (hero, testimonials) where the
+  // light-on-dark `primary`/`outline` pairing would go invisible.
+  invert: 'bg-gold text-charcoal hover:bg-gold-light shadow-gold',
+  'outline-invert': 'border border-cream/40 text-cream hover:bg-cream/10',
 }
 
 const sizeClasses: Record<Size, string> = {

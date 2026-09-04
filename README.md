@@ -106,9 +106,11 @@ API for pulling a business account's photos without authentication.
 
 Every photo/video slot in the site currently renders `<ArtTile>`
 (`src/components/ui/ArtTile.tsx`) instead: a small, deterministic
-illustration generated from a CSS gradient in the brand palette plus a
-line-art icon, so nothing looks like a broken image link. Swap them for real
-media once available:
+illustration generated from a CSS gradient in the brand palette, topped with
+a hand-drawn fingernail/manicure line icon (`icon="nail"` or `icon="nails"`)
+so it reads as an actual nail image rather than an abstract shape — plus a
+CSS "sheen" sweep on the hero tile standing in for real video motion. Swap
+them for real media once available:
 
 - For a photo, replace the `<ArtTile seed="..." label="..." />` with a real
   `<img>` (or Next/Image-style component), reusing the same `label` as
@@ -123,12 +125,19 @@ media once available:
 
 ## Color palette
 
-Defined in `tailwind.config.js` — a professional, editorial palette rather
-than a bright/candy one:
+Defined in `tailwind.config.js` — a premium/luxury palette (true onyx-black
++ champagne gold, in the spirit of black-and-gold beauty packaging) rather
+than a pastel one. The Header, Hero, Testimonials, and Footer use `charcoal`
+as a background to bookend the page with dark "luxury moments"; content
+sections in between stay on the light `cream` ground for readability.
 
 | Token | Hex | Use |
 |---|---|---|
-| `cream` | `#FAF6F0` | page background |
-| `charcoal` | `#211B18` | body text, dark sections |
-| `blush` / `blush-light` / `blush-dark` | `#C08893` / `#EFDDD9` / `#9C5F6C` | soft accent surfaces |
-| `gold` / `gold-light` / `gold-dark` | `#A6813C` / `#C9AD73` / `#7E5F28` | brand accent, CTAs, certificate foil |
+| `cream` | `#FAF7F1` | page background |
+| `charcoal` | `#141110` | true near-black — header/hero/footer backgrounds, body text |
+| `blush` / `blush-light` / `blush-dark` | `#B98A93` / `#EDDCD8` / `#8F5A64` | soft accent surfaces |
+| `gold` / `gold-light` / `gold-dark` | `#B8933F` / `#DCC17E` / `#8C6B28` | brand accent, CTAs, certificate foil |
+
+`.foil-text` (in `src/index.css`) applies an animated gold-foil gradient to
+text — used sparingly, on the hero's emphasis word only, per the "spend
+boldness in one place" principle.

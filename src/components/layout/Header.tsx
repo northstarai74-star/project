@@ -17,9 +17,9 @@ export function Header() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-40 border-b border-blush-light bg-cream/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-gold/15 bg-charcoal/95 backdrop-blur-md">
       <div className="container-app flex h-20 items-center justify-between">
-        <NavLink to="/" className="flex items-center gap-2 font-serif text-2xl font-semibold text-charcoal" onClick={() => setOpen(false)}>
+        <NavLink to="/" className="flex items-center gap-2 font-serif text-2xl font-semibold text-cream" onClick={() => setOpen(false)}>
           <Sparkles className="text-gold" size={22} aria-hidden="true" />
           Self Pampering
         </NavLink>
@@ -32,8 +32,8 @@ export function Header() {
               end={link.to === '/'}
               className={({ isActive }) =>
                 cn(
-                  'focus-ring rounded text-sm font-medium text-charcoal/80 transition-colors hover:text-gold-dark',
-                  isActive && 'text-gold-dark',
+                  'focus-ring rounded text-sm font-medium text-cream/75 transition-colors hover:text-gold-light',
+                  isActive && 'text-gold-light',
                 )
               }
             >
@@ -42,14 +42,14 @@ export function Header() {
           ))}
           <NavLink
             to="/booking"
-            className="focus-ring rounded-full bg-charcoal px-5 py-2.5 text-sm font-semibold text-cream shadow-soft transition hover:bg-charcoal/90"
+            className="focus-ring rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-charcoal shadow-gold transition hover:bg-gold-light"
           >
             Book Appointment
           </NavLink>
         </nav>
 
         <button
-          className="focus-ring rounded-lg p-2 text-charcoal lg:hidden"
+          className="focus-ring rounded-lg p-2 text-cream lg:hidden"
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           onClick={() => setOpen((o) => !o)}
@@ -61,7 +61,7 @@ export function Header() {
       {open && (
         <nav
           aria-label="Mobile"
-          className="border-t border-blush-light bg-cream px-4 pb-6 pt-2 lg:hidden"
+          className="border-t border-gold/15 bg-charcoal px-4 pb-6 pt-2 lg:hidden"
         >
           <ul className="flex flex-col gap-1">
             {NAV_LINKS.map((link) => (
@@ -72,8 +72,8 @@ export function Header() {
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
                     cn(
-                      'focus-ring block rounded-lg px-3 py-3 text-base font-medium text-charcoal/80',
-                      isActive && 'bg-blush-light text-gold-dark',
+                      'focus-ring block rounded-lg px-3 py-3 text-base font-medium text-cream/75',
+                      isActive && 'bg-gold/10 text-gold-light',
                     )
                   }
                 >
@@ -85,7 +85,7 @@ export function Header() {
               <NavLink
                 to="/booking"
                 onClick={() => setOpen(false)}
-                className="focus-ring block rounded-full bg-charcoal px-5 py-3 text-center text-base font-semibold text-cream"
+                className="focus-ring block rounded-full bg-gold px-5 py-3 text-center text-base font-semibold text-charcoal"
               >
                 Book Appointment
               </NavLink>

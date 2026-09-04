@@ -68,7 +68,7 @@ export function Gallery() {
                 <ArtTile
                   seed={image.src}
                   label={image.alt}
-                  icon={i % 2 === 0 ? 'flower' : 'sparkle'}
+                  icon={i % 2 === 0 ? 'nails' : 'nail'}
                   radius="none"
                   className="aspect-[4/5] w-full transition-transform duration-500 hover:scale-105"
                 />

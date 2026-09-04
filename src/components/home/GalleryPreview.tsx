@@ -39,7 +39,7 @@ export function GalleryPreview() {
             <ArtTile
               seed={image.src}
               label={image.alt}
-              icon={i % 2 === 0 ? 'flower' : 'sparkle'}
+              icon={i % 2 === 0 ? 'nails' : 'nail'}
               className="aspect-[4/5] w-full shadow-soft"
             />
           </Reveal>

@@ -26,7 +26,12 @@ h1, h2, h3, h4, .font-serif {
 .gold-divider {
   height: 2px;
   width: 72px;
-  @apply bg-gold-foil bg-cream rounded-full;
+  @apply bg-gold-foil animate-foil rounded-full;
+  background-size: 200% auto;
+}
+
+.foil-text {
+  @apply bg-gold-foil animate-foil bg-clip-text text-transparent;
   background-size: 200% auto;
 }
 
