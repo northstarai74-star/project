@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { BadgeCheck } from 'lucide-react'
 import { Button } from '../ui/Button'
-import { ArtTile } from '../ui/ArtTile'
+import { HeroSlideshow } from './HeroSlideshow'
 
 export function Hero() {
   return (
@@ -54,20 +54,16 @@ export function Hero() {
           className="relative"
         >
           <div className="relative overflow-hidden rounded-2xl shadow-soft ring-1 ring-gold/20">
-            <ArtTile
-              seed="hero"
-              icon="nails"
-              label="Close-up of an elegant hand-painted nail art design by Self Pampering"
-              className="h-[420px] w-full sm:h-[520px]"
-            />
-            {/* Diagonal light sweep standing in for video motion — this
-                environment cannot embed a real video clip (see README). */}
+            <HeroSlideshow />
+            {/* Diagonal light sweep layered on top for extra "in motion"
+                shine — this environment cannot embed a real video clip, see
+                README's "A note on photos and video". */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-y-0 left-0 w-1/3 animate-sheen bg-gradient-to-r from-transparent via-white/25 to-transparent"
             />
           </div>
-          <div className="absolute -bottom-6 -left-6 hidden rounded-2xl bg-cream p-4 shadow-soft sm:block">
+          <div className="absolute -top-6 -right-6 hidden rounded-2xl bg-cream p-4 shadow-soft sm:block">
             <p className="font-serif text-2xl font-bold text-gold-dark">500+</p>
             <p className="text-xs font-medium text-charcoal/60">Certified graduates</p>
           </div>
