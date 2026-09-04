@@ -143,7 +143,7 @@ label {
   gap: 20px;
 }
 .app-header nav a {
-  color: var(--text);
+  color: black;
   font-weight: 500;
 }
 .app-header nav a.cta {
