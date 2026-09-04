@@ -60,8 +60,9 @@ docs/
 
 ## Pages
 
-- **Home** — hero, highlights, featured services, gallery preview, testimonials,
-  certificate verification teaser, newsletter signup
+- **Home** — hero, highlights, featured services, a nail extension shapes
+  slideshow, gallery preview, testimonials, certificate verification teaser,
+  newsletter signup
 - **Services** — filterable service list with pricing and booking CTA
 - **Gallery** — filterable, lightbox-enabled image grid
 - **Academy** — course listings with curriculum, fees, and certificate info

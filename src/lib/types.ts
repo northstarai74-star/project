@@ -38,6 +38,15 @@ export interface Course {
   image: string
 }
 
+export interface NailExtensionLook {
+  id: string
+  title: string
+  shape: string
+  description: string
+  /** Real photo/video URL once available; today rendered as an <ArtTile seed={image}>. */
+  image: string
+}
+
 export interface Certificate {
   referenceNumber: string
   studentName: string
